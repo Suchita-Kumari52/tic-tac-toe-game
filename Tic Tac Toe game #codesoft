@@ -1,0 +1,110 @@
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+//Array for the board
+char board[3][3] = {{'1','2','3'},{'4','5','6'},{'7','8','9'}};
+//Variable Declaration
+int choice;
+int row,column;
+char input = 'X';
+bool draw = false;
+//Function to show the current status of the gaming board
+void Game_Board(){
+    cout<<"PLAYER is : 1 [X]\t PLAYER is : 2 [O]\n\n";
+    cout<<"    |    |     \n";
+    cout<<" "<<board[0][0]<<"  | "<<board[0][1]<<"  |  "<<board[0][2]<<" \n";
+    cout<<"____|____|____\n";
+    cout<<"    |    |     \n";
+    cout<<" "<<board[1][0]<<"  | "<<board[1][1]<<"  |  "<<board[1][2]<<" \n";
+    cout<<"____|____|____\n";
+    cout<<"    |    |     \n";
+    cout<<" "<<board[2][0]<<"  | "<<board[2][1]<<"  |  "<<board[2][2]<<" \n";
+    cout<<"    |    |     \n";
+}
+//here use the function to get the player input and update the board
+void player_input(){
+    if(input == 'X'){
+        cout<<"Player  1 [X] input : ";
+    }
+    else if(input == 'O'){
+        cout<<"Player  2 [O] input : ";
+    }
+    //Taking input from user and update the board according to choice
+    cin>> choice;
+    //switch case to get which row and column will be update
+  switch(choice){
+        case 1: row=0; column=0; break;
+        case 2: row=0; column=1; break;
+        case 3: row=0; column=2; break;
+        case 4: row=1; column=0; break;
+        case 5: row=1; column=1; break;
+        case 6: row=1; column=2; break;
+        case 7: row=2; column=0; break;
+        case 8: row=2; column=1; break;
+        case 9: row=2; column=2; break;
+        default:
+            cout<<"Invalid Move";
+    }
+ if(input == 'X' && board[row][column] != 'X' && board[row][column] != 'O'){
+        //updating the position for 'X' symbol if
+        //it is not already occupied
+        board[row][column] = 'X';
+        input = 'O';
+    }else if(input == 'O' && board[row][column] != 'X' && board[row][column] != 'O'){
+        //updating the position for 'O' symbol if
+        //it is not already occupied
+        board[row][column] = 'O';
+        input = 'X';
+    }else {
+        //if input position already filled
+        cout<<"Box already filled!n Please choose another!!\n\n";
+        player_input();
+    }
+    /* Ends */
+   //Game_Board();
+}
+
+//Function to get the game status e.g. GAME WON, GAME DRAW GAME IN CONTINUE MODE
+bool gameover(){
+    //checking the win for Simple Rows and Simple Column
+    for(int i=0; i<3; i++)
+    if(board[i][0] == board[i][1] && board[i][0] == board[i][2] || board[0][i] == board[1][i] && board[0][i] == board[2][i])
+    return false;
+  //checking both diagonal elements
+ if(board[0][0] == board[1][1] && board[0][0] == board[2][2] || board[0][2] == board[1][1] && board[0][2] == board[2][0])
+    return false;
+if(board[0][2] == board[1][2] && board[0][2] == board[2][2] || board[2][0] == board[2][1] && board[2][0] == board[2][2])
+    return false;
+//Checking the game is in continue mode or not
+    for(int i=0; i<3; i++)
+    for(int j=0; j<3; j++){
+    if(board[i][j] != 'X' && board[i][j] != 'O')
+    return true;
+        
+    }
+ //Checking the if game already draw
+    draw = true;
+    return false;
+}
+//here main program start
+int main()
+{
+    cout<<"\t\t\t\tWELLCOME!!\n";
+   cout<<"\t\t||TIC TAC TOE GAME||\n";
+    cout<<"\t\t\tGood luck!!\n";
+    while(gameover()){
+        Game_Board();
+        player_input();
+        gameover();
+    }
+    if(input == 'X' && draw == false){
+        cout<<"\tCongratulations!Player second '0' has won the game";
+        cout<<"\nWell Played!!";
+    }
+    else if(input == 'O' && draw == false){
+        cout<<"\nCongratulations!Player first 'X' has won the game"; 
+        cout<<"\nWell Played!!";
+    }
+    else
+    cout<<"\n\nGAME DRAW!!!\n\n";
+}
